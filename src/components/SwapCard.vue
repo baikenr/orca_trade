@@ -61,20 +61,21 @@
           </div>
 
           <div class="mt-1 text-sm text-[#9FA1AD]">
-            ${{ fromInUsd }}
+            ${{ fromUsdValue }}
           </div>
         </div>
 
-        <!-- INPUT 2: To -->
+        <!-- INPUT 2: To (read-only) -->
         <div
           class="rounded-[10px] bg-[#17171F] p-3 mb-2 border border-transparent focus-within:border-[#FFC83D] transition-colors"
         >
           <span class="text-sm text-[#9FA1AD]">{{ isReversed ? 'Pay' : 'Receive' }}</span>
           <div class="flex items-center justify-between">
             <input
-              v-model="toAmount"
+              :value="toAmount"
               type="number"
               placeholder="0"
+              readonly
               class="w-full bg-transparent text-4xl font-bold placeholder:text-[#9FA1AD] outline-none"
             />
             <button
@@ -88,7 +89,7 @@
           </div>
 
           <div class="mt-1 text-sm text-[#9FA1AD]">
-            ${{ toInUsd }}
+            ${{ fromUsdValue }}
           </div>
         </div>
 
@@ -114,7 +115,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, watch } from "vue";
 import axios from "axios";
 import { X, ArrowDownUp } from "lucide-vue-next";
 import Banner from "@/assets/swapcard_banner.png";
@@ -123,18 +124,26 @@ import Logo from "@/assets/favicon.ico";
 
 const showBanner = ref(true);
 const isReversed = ref(false);
+const fromAmount = ref('');
 
-// Токены
 const solanaToken = { name: 'SOL', icon: Solana, price: 0, id: 'solana' };
 const orcaToken = { name: 'ORKA', icon: Logo, price: 0, id: 'orca' };
 
 const fromToken = computed(() => isReversed.value ? orcaToken : solanaToken);
 const toToken = computed(() => isReversed.value ? solanaToken : orcaToken);
 
-const fromAmount = ref('');
-const toAmount = ref('');
+const fromUsdValue = computed(() => {
+  const amt = parseFloat(fromAmount.value) || 0;
+  return (amt * fromToken.value.price).toFixed(2);
+});
 
-// Обновляем цены
+const toAmount = computed(() => {
+  const usd = parseFloat(fromUsdValue.value);
+  const toPrice = toToken.value.price;
+  if (!toPrice || toPrice === 0) return '0';
+  return (usd / toPrice).toFixed(6);
+});
+
 async function fetchTokenPrices() {
   try {
     const response = await axios.get(
@@ -149,23 +158,8 @@ async function fetchTokenPrices() {
   }
 }
 
-const fromInUsd = computed(() => {
-  const amount = parseFloat(fromAmount.value) || 0;
-  return (amount * fromToken.value.price).toFixed(2);
-});
-
-const toInUsd = computed(() => {
-  const amount = parseFloat(toAmount.value) || 0;
-  return (amount * toToken.value.price).toFixed(2);
-});
-
 function swapTokens() {
-  // Меняем местами значения
-  const temp = fromAmount.value;
   fromAmount.value = toAmount.value;
-  toAmount.value = temp;
-
-  // Меняем направление
   isReversed.value = !isReversed.value;
 }
 
@@ -189,5 +183,8 @@ input {
   color: #9fa1ad;
   background-color: transparent;
   -webkit-text-fill-color: #9fa1ad;
+}
+input[readonly] {
+  cursor: default;
 }
 </style>
