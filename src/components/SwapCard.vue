@@ -53,7 +53,7 @@
             <button
               class="h-10 rounded-md bg-[#31343F] font-medium hover:bg-[#474B5C] text-[#FFFFFF] pl-1"
             >
-              <div class="flex gap-2 items-center">
+              <div class="flex gap-2 items-center" @click="connectWallet">
                 <img :src="fromToken.icon" class="h-6 rounded-full" />
                 <p class="text-[20px] text-white mr-8">{{ fromToken.name }}</p>
               </div>
@@ -81,7 +81,7 @@
             <button
               class="h-10 rounded-md bg-[#31343F] font-medium hover:bg-[#474B5C] text-[#FFFFFF] pl-1"
             >
-              <div class="flex gap-2 items-center">
+              <div class="flex gap-2 items-center" @click="connectWallet">
                 <img :src="toToken.icon" class="h-6 rounded-full" />
                 <p class="text-[20px] text-white mr-8">{{ toToken.name }}</p>
               </div>
