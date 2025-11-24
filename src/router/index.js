@@ -56,28 +56,28 @@ const router = createRouter({
 	routes
 })
 
-// router.beforeEach((to, from, next) => {
-// 	const isAuthenticated = !!sessionStorage.getItem('token');
-
-// 	if (to.meta.public) {
-// 		next();
-// 	} 
-// 	else if (isAuthenticated) {
-// 		next();
-// 	} 
-// 	else {
-// 		next({ path: '/login', query: { redirect: to.fullPath } });
-// 	}
-// });
-
-const disabledRoutes = ['Pools', 'Stake', 'Portfolio', 'Wavebreak', 'More']
-
 router.beforeEach((to, from, next) => {
-  if (disabledRoutes.includes(to.name)) {
-    return next(false) // запрещаем
-  }
+	const isAuthenticated = !!sessionStorage.getItem('token');
 
-  next() // разрешаем остальные
-})
+	if (to.meta.public) {
+		next();
+	} 
+	else if (isAuthenticated) {
+		next();
+	} 
+	else {
+		next({ path: '/login', query: { redirect: to.fullPath } });
+	}
+});
+
+// const disabledRoutes = ['Pools', 'Stake', 'Portfolio', 'Wavebreak', 'More']
+
+// router.beforeEach((to, from, next) => {
+//   if (disabledRoutes.includes(to.name)) {
+//     return next(false) // запрещаем
+//   }
+
+//   next() // разрешаем остальные
+// })
 
 export default router

@@ -1,8 +1,7 @@
 <template>
   <div class="flex flex-col min-h-screen bg-background">
     <Header />
-    <main class="flex-1 bg-[#13131A] px-4 py-12 flex items-center justify-center">
-      
+    <main class="flex-1 bg-[#13131A] px-4 py-12 flex justify-center">
       <router-view />
     </main>
     <Footer class="fixed bottom-0 left-0 w-full" />

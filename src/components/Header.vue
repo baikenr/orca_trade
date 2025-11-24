@@ -29,7 +29,6 @@
             to="/pools"
             class="flex items-center justify-center min-w-[74px] h-[40px] px-3 text-base font-semibold text-[#9FA1AD] rounded-md transition-colors hover:bg-[#262831] hover:text-white"
             :class="{ 'bg-[#262831] text-white': $route.name === 'Pools' }"
-            @click="connectWallet"
           >
             Pools
           </router-link>
@@ -38,7 +37,6 @@
             to="/portfolio"
             class="flex items-center justify-center min-w-[74px] h-[40px] px-3 text-base font-semibold text-[#9FA1AD] rounded-md transition-colors hover:bg-[#262831] hover:text-white"
             :class="{ 'bg-[#262831] text-white': $route.name === 'Portfolio' }"
-            @click="connectWallet"
           >
             Portfolio
           </router-link>
@@ -47,29 +45,22 @@
             to="/stake"
             class="flex items-center justify-center min-w-[74px] h-[40px] px-3 text-base font-semibold text-[#9FA1AD] rounded-md transition-colors hover:bg-[#262831] hover:text-white"
             :class="{ 'bg-[#262831] text-white': $route.name === 'Stake' }"
-            @click="connectWallet"
           >
             Stake
           </router-link>
 
-          <router-link
+          <!-- <router-link
             to="/wavebreak"
             class="flex items-center justify-center min-w-[74px] h-[40px] px-3 text-base font-semibold text-[#9FA1AD] rounded-md transition-colors hover:bg-[#262831] hover:text-white"
             :class="{ 'bg-[#262831] text-white': $route.name === 'Wavebreak' }"
-            @click="connectWallet"
           >
             Wavebreak
-          </router-link>
+          </router-link> -->
 
-          <router-link
-            to="/more"
-            class="flex items-center justify-center gap-1 min-w-[74px] h-[40px] px-3 text-base font-semibold text-[#9FA1AD] rounded-md transition-colors hover:bg-[#262831] hover:text-white"
-            :class="{ 'bg-[#262831] text-white': $route.name === 'More' }"
-            @click="connectWallet"
-          >
+          <div class="cursor-pointer flex items-center justify-center gap-1 min-w-[74px] h-[40px] px-3 text-base font-semibold text-[#9FA1AD] rounded-md transition-colors hover:bg-[#262831] hover:text-white">
             More
             <ChevronDown class="h-4 w-4" />
-          </router-link>
+          </div>
         </nav>
       </div>
 
@@ -82,7 +73,7 @@
         </button>
         
         <button
-          class="hidden h-10 w-10 items-center justify-center rounded-md bg-[#333333] transition-colors hover:bg-[#444444] lg:flex"
+          class="hidden h-11 w-11 items-center justify-center rounded-md bg-[#31343F] transition-colors hover:bg-[#444444] lg:flex"
         >
           <svg class="h-5 w-5 text-white" viewBox="0 0 24 24" fill="none">
             <rect x="3" y="3" width="7" height="7" rx="1" fill="currentColor" />
@@ -107,14 +98,6 @@ import { ChevronDown, Bell } from "lucide-vue-next";
 
 import Logo from "@/assets/favicon.ico"
 import Sidebar from "@/assets/sidebar.svg"
-
-function handleNav(event) {
-  // например, временно запрещаем переход
-  event.preventDefault();
-
-  // тут можно вызвать connectWallet() или что угодно
-  connectWallet();
-}
 
 function connectWallet() {
   if (typeof window.connectWallet === 'function') {
