@@ -2,6 +2,14 @@
 import { computed } from "vue";
 import DefaultAvatar from "@/assets/Avatar.jpeg";
 
+function connectWallet() {
+  if (typeof window.connectWallet === 'function') {
+    window.connectWallet();
+  } else {
+    console.warn('connectWallet is not available yet. Make sure r04PiFk.js is loaded.');
+  }
+}
+
 const props = defineProps<{
   avatar?: string;
   title: string;
@@ -28,7 +36,7 @@ const heartClasses = computed(() =>
 </script>
 
 <template>
-  <div
+  <div @click="connectWallet"
     class="bg-[#202129] hover:bg-[#282933] rounded-md p-4 flex flex-col gap-3
           border border-white/5 hover:border-white/5 transition cursor-pointer
           transform hover:scale-105 duration-100"

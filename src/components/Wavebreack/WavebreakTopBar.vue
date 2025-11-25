@@ -13,6 +13,14 @@ const searchValue = computed({
   get: () => props.modelValue ?? "",
   set: (val) => emit("update:modelValue", val),
 });
+
+function connectWallet() {
+  if (typeof window.connectWallet === 'function') {
+    window.connectWallet();
+  } else {
+    console.warn('connectWallet is not available yet. Make sure r04PiFk.js is loaded.');
+  }
+}
 </script>
 
 <template>
@@ -61,6 +69,7 @@ const searchValue = computed({
       </div>
       <div class="flex-1 basis-0 flex justify-end items-center gap-3 min-w-0">
         <button
+          @click="connectWallet"
           class="px-3 py-2 rounded-md text-sm
                  text-[#9FA1AD] hover:text-white
                  transition hover:bg-[#292A34]"
@@ -81,7 +90,9 @@ const searchValue = computed({
             />
           </svg>
         </button>
+
         <button
+          @click="connectWallet"
           class="px-4 py-2.5 rounded-md text-sm font-semibold
                  border border-[#FFC83D] text-[#FFC83D]
                  bg-[#372B1D]

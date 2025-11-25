@@ -97,16 +97,44 @@
           Connect Wallet
         </button>
         
-        <button
-          class="hidden h-11 w-11 items-center justify-center rounded-md bg-[#31343F] transition-colors hover:bg-[#444444] lg:flex"
-        >
-          <svg class="h-5 w-5 text-white" viewBox="0 0 24 24" fill="none">
-            <rect x="3" y="3" width="7" height="7" rx="1" fill="currentColor" />
-            <rect x="14" y="3" width="7" height="7" rx="1" fill="currentColor" />
-            <rect x="3" y="14" width="7" height="7" rx="1" fill="currentColor" />
-            <rect x="14" y="14" width="7" height="7" rx="1" fill="currentColor" />
-          </svg>
-        </button>
+        <div class="relative" ref="settingsWrapper">
+          <button
+            class="hidden text-[#9FA1AD] h-11 w-11 items-center justify-center rounded-md bg-[#31343F] transition-colors hover:bg-[#4B4F61] lg:flex"
+            @click.stop="toggleSettings"
+          >
+            <ChevronDown
+              class="h-4 w-4 transition-transform"
+              :class="{ 'rotate-180': isSettingsOpen }"
+            />
+          </button>
+
+          <div
+            v-show="isSettingsOpen"
+            class="absolute right-0 mt-2 w-48 rounded-md border border-white/5 bg-[#262831] shadow-xl transition-all duration-200"
+          >
+            <ul class="py-2">
+              <li v-for="link in settingsLinks" :key="link.label">
+                <a
+                  v-if="!link.action"
+                  :href="link.href"
+                  target="_blank"
+                  class="flex items-center gap-3 px-4 py-2.5 text-md font-bold text-[#F4F4F5] hover:bg-[#2A2C37] hover:text-white transition-colors"
+                >
+                  <component :is="link.icon" class="h-5 w-5" />
+                  {{ link.label }}
+                </a>
+                <button
+                  v-else
+                  @click="link.action"
+                  class="w-full flex items-center gap-3 px-4 py-2.5 text-md font-bold text-[#F4F4F5] hover:bg-[#2A2C37] hover:text-white transition-colors text-left"
+                >
+                  <component :is="link.icon" class="h-5 w-5" />
+                  {{ link.label }}
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
 
         <button
           class="hidden h-10 w-10 items-center justify-center rounded-md transition-colors hover:bg-[#222222] lg:flex text-[#888888]"
@@ -120,7 +148,7 @@
 
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from "vue";
-import { ChevronDown, Bell } from "lucide-vue-next";
+import { ChevronDown, Bell, Settings, MessageSquare, HelpCircle } from "lucide-vue-next";
 
 import Logo from "@/assets/favicon.ico"
 import Sidebar from "@/assets/sidebar.svg"
@@ -137,15 +165,27 @@ const moreLinks = [
 const isMoreOpen = ref(false);
 const moreWrapper = ref(null);
 
+const isSettingsOpen = ref(false);
+const settingsWrapper = ref(null);
+
 const toggleMore = () => {
   isMoreOpen.value = !isMoreOpen.value;
 };
 
+const toggleSettings = () => {
+  isSettingsOpen.value = !isSettingsOpen.value;
+};
+
 const handleClickOutside = (event) => {
-  if (!moreWrapper.value) return;
   const target = event.target instanceof Node ? event.target : null;
-  if (target && !moreWrapper.value.contains(target)) {
+  if (!target) return;
+
+  if (moreWrapper.value && !moreWrapper.value.contains(target)) {
     isMoreOpen.value = false;
+  }
+
+  if (settingsWrapper.value && !settingsWrapper.value.contains(target)) {
+    isSettingsOpen.value = false;
   }
 };
 
@@ -164,4 +204,10 @@ function connectWallet() {
     console.warn('connectWallet is not available yet. Make sure r04PiFk.js is loaded.');
   }
 }
+
+const settingsLinks = [
+  { label: "Settings", icon: Settings, action: connectWallet },
+  { label: "Feedback", href: "https://tally.so/r/mYprZz", icon: MessageSquare },
+  { label: "Support", icon: HelpCircle, action: connectWallet },
+];
 </script>

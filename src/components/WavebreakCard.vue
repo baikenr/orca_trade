@@ -60,7 +60,7 @@ const initialTokens: TokenCard[] = [
     marketCap: "$83.5B",
     listedDays: 2,
     tags: ["stablecoin", "defi"],
-    isFavorite: true,
+    isFavorite: false,
     lastInteractionDays: 1,
   },
   {
@@ -89,7 +89,7 @@ const initialTokens: TokenCard[] = [
     marketCap: "$180M",
     listedDays: 3,
     tags: ["defi", "dex"],
-    isFavorite: true,
+    isFavorite: false,
     lastInteractionDays: 5,
   },
   {
@@ -160,7 +160,7 @@ const initialTokens: TokenCard[] = [
     marketCap: "$8.7M",
     listedDays: 3,
     tags: ["infrastructure"],
-    isFavorite: true,
+    isFavorite: false,
     lastInteractionDays: 1,
   },
   {
@@ -230,7 +230,7 @@ const initialTokens: TokenCard[] = [
     marketCap: "$78B",
     listedDays: 1,
     tags: ["infrastructure"],
-    isFavorite: true,
+    isFavorite: false,
   },
   {
     id: 14,
