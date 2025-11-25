@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full mx-auto p-4">
+  <div class="w-full mx-auto p-4 px-8">
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 mt-10">
       <h1 class="text-2xl font-bold text-[#FFFFFF]">Pools</h1>
       

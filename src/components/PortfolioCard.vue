@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full mx-auto p-4">
+  <div class="w-full mx-auto p-4 px-8">
     <h1 class="text-2xl font-bold text-[#FFFFFF] mt-10 mb-6">Portfolio</h1>
 
     <section>

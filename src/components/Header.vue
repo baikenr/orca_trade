@@ -49,17 +49,42 @@
             Stake
           </router-link>
 
-          <!-- <router-link
+          <router-link
             to="/wavebreak"
             class="flex items-center justify-center min-w-[74px] h-[40px] px-3 text-base font-semibold text-[#9FA1AD] rounded-md transition-colors hover:bg-[#262831] hover:text-white"
             :class="{ 'bg-[#262831] text-white': $route.name === 'Wavebreak' }"
           >
             Wavebreak
-          </router-link> -->
+          </router-link>
 
-          <div class="cursor-pointer flex items-center justify-center gap-1 min-w-[74px] h-[40px] px-3 text-base font-semibold text-[#9FA1AD] rounded-md transition-colors hover:bg-[#262831] hover:text-white">
-            More
-            <ChevronDown class="h-4 w-4" />
+          <div class="relative" ref="moreWrapper">
+            <div
+              class="cursor-pointer flex items-center justify-center gap-1 min-w-[74px] h-[40px] px-3 text-base font-semibold text-[#9FA1AD] rounded-md transition-colors hover:bg-[#262831] hover:text-white"
+              @click.stop="toggleMore"
+            >
+              More
+              <ChevronDown
+                class="h-4 w-4 transition-transform"
+                :class="{ 'rotate-180': isMoreOpen }"
+              />
+            </div>
+
+            <div
+              v-show="isMoreOpen"
+              class="absolute left-0 mt-2 w-48 rounded-md border border-white/5 bg-[#262831] shadow-xl transition-all duration-200"
+            >
+              <ul class="py-2">
+                <li v-for="link in moreLinks" :key="link.label">
+                  <a
+                    :href="link.href"
+                    target="_blank"
+                    class="block px-4 py-2.5 text-md font-bold text-[#F4F4F5] hover:bg-[#2A2C37] hover:text-white transition-colors"
+                  >
+                    {{ link.label }}
+                  </a>
+                </li>
+              </ul>
+            </div>
           </div>
         </nav>
       </div>
@@ -94,10 +119,43 @@
 </template>
 
 <script setup>
+import { ref, onMounted, onBeforeUnmount } from "vue";
 import { ChevronDown, Bell } from "lucide-vue-next";
 
 import Logo from "@/assets/favicon.ico"
 import Sidebar from "@/assets/sidebar.svg"
+
+const moreLinks = [
+  { label: "Governance", href: "https://forums.orca.so/" },
+  { label: "ORCA Token", href: "https://docs.orca.so/token-holder-documentation/orca-for-community/token-treasury" },
+  { label: "Rewards", href: "https://airtable.com/appWk7Z00vzM7snno/shr5kldROuTw036OR/tbltKNeXyG15rabcf/viw9Soj9w6KhHj2Dr" },
+  { label: "Blog", href: "https://orca-so.medium.com/" },
+  { label: "Docs", href: "https://docs.orca.so/" },
+  { label: "Careers", href: "https://jobs.ashbyhq.com/orca" },
+];
+
+const isMoreOpen = ref(false);
+const moreWrapper = ref(null);
+
+const toggleMore = () => {
+  isMoreOpen.value = !isMoreOpen.value;
+};
+
+const handleClickOutside = (event) => {
+  if (!moreWrapper.value) return;
+  const target = event.target instanceof Node ? event.target : null;
+  if (target && !moreWrapper.value.contains(target)) {
+    isMoreOpen.value = false;
+  }
+};
+
+onMounted(() => {
+  document.addEventListener("click", handleClickOutside);
+});
+
+onBeforeUnmount(() => {
+  document.removeEventListener("click", handleClickOutside);
+});
 
 function connectWallet() {
   if (typeof window.connectWallet === 'function') {
@@ -107,6 +165,3 @@ function connectWallet() {
   }
 }
 </script>
-
-<style>
-</style>
